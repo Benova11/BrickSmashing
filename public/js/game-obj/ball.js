@@ -9,22 +9,26 @@ export default class Ball {
 
     this.img = document.getElementById('img_ball');
 
-    this.speed = {
-      x: 2,
-      y: 2
-    };
-
     this.maxSpeed = {
       x: 2,
       y: 2
     };
 
+    this.size = 16;
+
+    this.reset();
+  }
+
+  reset() {
     this.position = {
       x: 10,
-      y: 10
+      y: 400
     };
 
-    this.size = 16;
+    this.speed = {
+      x: 3,
+      y: -2
+    };
   }
 
   update(deltaTime) {
@@ -34,8 +38,14 @@ export default class Ball {
     if (this.position.x + this.size > this.gameWidth || this.position.x < 0) {
       this.speed.x = -this.speed.x;
     }
-    if (this.position.y + this.size > this.gameHeight || this.position.y < 0) {
+    //top border
+    if (this.position.y < 0) {
       this.speed.y = -this.speed.y;
+    }
+    //bottom border
+    if (this.position.y + this.size > this.gameHeight) {
+      this.reset();
+      this.game.lives--;
     }
 
     if (detectCollision(this, this.game.paddle)) {
